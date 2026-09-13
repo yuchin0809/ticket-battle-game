@@ -607,6 +607,284 @@ input:focus {
   text-align: center;
 }
 
+.rank-S {
+  color: #f59e0b;
+  text-shadow: 0 0 22px rgba(245,158,11,.55);
+}
+
+.rank-A {
+  color: #2563eb;
+  text-shadow: 0 0 18px rgba(37,99,235,.45);
+}
+
+.rank-B {
+  color: #059669;
+}
+
+.rank-C {
+  color: #475569;
+}
+
+.rank-D,
+.rank-E {
+  color: #94a3b8;
+}
+
+
+/* =========================
+   連打ダッシュ
+========================= */
+
+.mash-area {
+  position: relative;
+
+  margin-top: 22px;
+
+  text-align: center;
+}
+
+.mash-button {
+  width: 100%;
+
+  padding: 28px;
+
+  font-size: 20px;
+
+  background: linear-gradient(135deg,#fb923c,#dc2626);
+
+  box-shadow: 0 10px 25px rgba(220,38,38,.35);
+
+  border-radius: 16px;
+
+  user-select: none;
+
+  touch-action: manipulation;
+}
+
+.mash-button:active {
+  transform: scale(.96);
+}
+
+.mash-stats {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 12px;
+
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+.mash-particle {
+  position: absolute;
+
+  font-weight: 900;
+
+  color: #dc2626;
+
+  pointer-events: none;
+
+  animation: mash-float .7s ease-out forwards;
+}
+
+@keyframes mash-float {
+
+  to {
+    transform: translateY(-46px);
+    opacity: 0;
+  }
+
+}
+
+
+/* =========================
+   シェア
+========================= */
+
+.share-section {
+  margin-top: 22px;
+
+  text-align: left;
+}
+
+.share-buttons {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 8px;
+}
+
+.share-btn {
+  flex: 1;
+
+  min-width: 130px;
+
+  font-size: 14px;
+}
+
+.x-btn {
+  background: #0f172a;
+}
+
+.line-btn {
+  background: #06c755;
+}
+
+.copy-btn {
+  background: #475569;
+}
+
+
+/* =========================
+   紙吹雪・シェイク
+========================= */
+
+.confetti-container {
+  position: fixed;
+  inset: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  z-index: 9999;
+}
+
+.confetti-piece {
+  position: absolute;
+
+  top: -12px;
+
+  width: 8px;
+  height: 14px;
+
+  opacity: .9;
+
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes confetti-fall {
+
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+
+}
+
+.shake {
+  animation: card-shake .5s;
+}
+
+@keyframes card-shake {
+
+  10%, 90% { transform: translateX(-3px); }
+  20%, 80% { transform: translateX(5px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+
+}
+
+
+/* =========================
+   ランキング・自己ベスト
+========================= */
+
+.best-badge {
+  background: linear-gradient(135deg,#fef3c7,#ffffff);
+  border: 1px solid #fbbf24;
+
+  color: #92400e;
+
+  padding: 14px;
+  border-radius: 12px;
+
+  margin: 16px 0;
+
+  line-height: 1.7;
+
+  text-align: left;
+}
+
+.new-record {
+  background: linear-gradient(135deg,#fef3c7,#fff7ed);
+  border: 1px solid #fbbf24;
+
+  color: #92400e;
+
+  font-weight: 900;
+
+  padding: 14px;
+  border-radius: 12px;
+
+  margin: 20px 0;
+
+  animation: record-pop .5s ease;
+}
+
+@keyframes record-pop {
+
+  0% { transform: scale(.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+
+}
+
+.rank-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.rank-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+}
+
+.rank-item.top1 {
+  background: linear-gradient(135deg,#fef3c7,#ffffff);
+  border-color: #fbbf24;
+}
+
+.rank-item-position {
+  font-weight: 900;
+
+  font-size: 18px;
+
+  width: 30px;
+
+  text-align: center;
+
+  color: #64748b;
+}
+
+.rank-item-info {
+  flex: 1;
+}
+
+.rank-item-score {
+  font-weight: 900;
+}
+
 
 /* =========================
    スマホ
@@ -641,6 +919,12 @@ input:focus {
 <body>
 
 
+<div
+  id="confettiContainer"
+  class="confetti-container">
+</div>
+
+
 <header>
 🎫 TICKET BATTLE
 </header>
@@ -672,11 +956,29 @@ input:focus {
 
     </div>
 
+    <div
+      id="bestRecordBox"
+      class="best-badge"
+      style="display:none;">
+
+      🏆 この端末の自己ベスト：
+      <span id="bestRecordText"></span>
+
+    </div>
+
     <button
       class="full"
       onclick="prepareGame()">
 
       今回のチケットを決める
+
+    </button>
+
+    <button
+      class="full dark"
+      onclick="showRanking()">
+
+      🏆 ランキングを見る
 
     </button>
 
@@ -961,6 +1263,33 @@ input:focus {
       接続しています……
 
     </p>
+
+    <div
+      id="mashArea"
+      class="mash-area">
+
+      <button
+        id="mashButton"
+        class="mash-button"
+        onpointerdown="handleMash(event)">
+
+        🔥 連打してダッシュ！
+
+      </button>
+
+      <div class="mash-stats">
+
+        <span>
+          タップ数：<b id="mashCount">0</b>回
+        </span>
+
+        <span>
+          連打速度：<b id="mashCps">0.0</b> 回/秒
+        </span>
+
+      </div>
+
+    </div>
 
   </div>
 
@@ -1383,6 +1712,19 @@ input:focus {
 
     </button>
 
+    <div
+      id="purchaseLoading"
+      class="loading">
+
+      <div class="spinner"></div>
+
+      <span>
+        購入処理中……
+        他のお客様と競合していないか確認しています
+      </span>
+
+    </div>
+
   </div>
 
 </section>
@@ -1434,11 +1776,113 @@ input:focus {
     </div>
 
 
+    <div
+      id="newRecordBadge"
+      class="new-record"
+      style="display:none;">
+
+      🎉 自己ベストを更新しました！
+
+    </div>
+
+
+    <div class="share-section">
+
+      <p class="small">
+        結果をシェアしよう！
+      </p>
+
+      <div class="share-buttons">
+
+        <button
+          id="nativeShareBtn"
+          class="share-btn"
+          style="display:none;"
+          onclick="shareNative()">
+
+          📤 シェア
+
+        </button>
+
+        <button
+          class="share-btn x-btn"
+          onclick="shareToX()">
+
+          𝕏 でシェア
+
+        </button>
+
+        <button
+          class="share-btn line-btn"
+          onclick="shareToLine()">
+
+          LINEでシェア
+
+        </button>
+
+        <button
+          id="copyShareBtn"
+          class="share-btn copy-btn"
+          onclick="copyShareLink()">
+
+          🔗 リンクをコピー
+
+        </button>
+
+      </div>
+
+    </div>
+
+
     <button
       class="full dark"
+      onclick="showRanking()">
+
+      🏆 ランキングを見る
+
+    </button>
+
+    <button
+      class="full"
       onclick="location.reload()">
 
       もう一度挑戦する
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     ランキング
+========================= -->
+
+<section
+  id="ranking"
+  class="screen">
+
+  <div class="card">
+
+    <h2>
+      🏆 ランキング
+    </h2>
+
+    <p class="small">
+
+      この端末でプレイした記録の中から、
+      スコアの高い順にトップ10を表示しています。
+
+    </p>
+
+    <div id="rankingList"></div>
+
+    <button
+      class="full dark"
+      onclick="show('start')">
+
+      スタートに戻る
 
     </button>
 
@@ -1664,6 +2108,26 @@ let queuePosition = 0;
 let queueDuration = 0;
 
 
+/*
+  連打ダッシュ
+*/
+
+let mashSavedMs = 0;
+
+let mashTapCount = 0;
+
+let mashTimestamps = [];
+
+let queueTimeSavedByMash = 0;
+
+
+/*
+  結果・シェア用
+*/
+
+let lastResultOutcome = null;
+
+
 /* =====================================================
    画面切り替え
 ===================================================== */
@@ -1685,6 +2149,22 @@ function show(id) {
 
 
   window.scrollTo(0,0);
+
+
+  /*
+    結果画面以外に移動したら
+    紙吹雪を消す
+  */
+
+  if(id !== "result") {
+
+    document
+      .getElementById(
+        "confettiContainer"
+      )
+      .innerHTML = "";
+
+  }
 
 }
 
@@ -2020,6 +2500,29 @@ function startQueue(reaction) {
     "接続しています……";
 
 
+  /*
+    連打ダッシュの状態をリセット
+  */
+
+  mashSavedMs = 0;
+
+  mashTapCount = 0;
+
+  mashTimestamps = [];
+
+  queueTimeSavedByMash = 0;
+
+
+  document
+    .getElementById("mashCount")
+    .textContent = "0";
+
+
+  document
+    .getElementById("mashCps")
+    .textContent = "0.0";
+
+
   show("queue");
 
 
@@ -2051,10 +2554,26 @@ function runQueue() {
       now - start;
 
 
+    /*
+      連打で最大70%まで
+      待機時間を短縮できる
+    */
+
+    const minDuration =
+      queueDuration * 0.3;
+
+
+    const effectiveDuration =
+      Math.max(
+        minDuration,
+        queueDuration - mashSavedMs
+      );
+
+
     const progress =
       Math.min(
         1,
-        elapsed / queueDuration
+        elapsed / effectiveDuration
       );
 
 
@@ -2089,6 +2608,11 @@ function runQueue() {
 
     else {
 
+      queueTimeSavedByMash =
+        queueDuration
+        - effectiveDuration;
+
+
       document
         .getElementById("queueNumber")
         .textContent =
@@ -2112,6 +2636,113 @@ function runQueue() {
 
 
   requestAnimationFrame(tick);
+
+}
+
+
+/* =====================================================
+   連打ダッシュ
+
+   タップするほど待機時間が
+   短くなる（下限あり）
+===================================================== */
+
+function handleMash(event) {
+
+  if(
+    !document
+      .getElementById("queue")
+      .classList
+      .contains("active")
+  ) {
+    return;
+  }
+
+
+  /*
+    1タップにつき90ms短縮
+    （合計で最大70%まで）
+  */
+
+  mashSavedMs =
+    Math.min(
+      queueDuration * 0.7,
+      mashSavedMs + 90
+    );
+
+
+  mashTapCount++;
+
+
+  const now =
+    performance.now();
+
+
+  mashTimestamps.push(now);
+
+  mashTimestamps =
+    mashTimestamps.filter(
+      t => now - t <= 1000
+    );
+
+
+  document
+    .getElementById("mashCount")
+    .textContent =
+    mashTapCount;
+
+
+  document
+    .getElementById("mashCps")
+    .textContent =
+    mashTimestamps.length
+      .toFixed(1);
+
+
+  spawnMashParticle();
+
+
+  if(navigator.vibrate) {
+    navigator.vibrate(8);
+  }
+
+}
+
+
+/* =====================================================
+   連打タップの演出
+===================================================== */
+
+function spawnMashParticle() {
+
+  const area =
+    document
+      .getElementById("mashArea");
+
+
+  const particle =
+    document.createElement("div");
+
+
+  particle.className =
+    "mash-particle";
+
+  particle.textContent =
+    "+1";
+
+  particle.style.left =
+    random(20,80) + "%";
+
+  particle.style.top =
+    "0px";
+
+
+  area.appendChild(particle);
+
+
+  setTimeout(() => {
+    particle.remove();
+  },700);
 
 }
 
@@ -3137,14 +3768,145 @@ function purchase() {
     ) / 1000;
 
 
-  const success =
-    totalTime <=
-    target.sellOut;
+  const button =
+    document
+      .getElementById(
+        "purchaseButton"
+      );
 
 
-  showResult(
-    success,
-    totalTime
+  button.disabled = true;
+
+  button.textContent =
+    "購入処理中…";
+
+
+  document
+    .getElementById(
+      "purchaseLoading"
+    )
+    .classList.add("show");
+
+
+  /*
+    他のお客様と購入が
+    競合していないか
+    確認している演出
+  */
+
+  setTimeout(() => {
+
+    const outcome =
+      determineOutcome(
+        totalTime
+      );
+
+
+    showResult(
+      outcome,
+      totalTime
+    );
+
+  },random(700,1500));
+
+}
+
+
+/* =====================================================
+   買い負け判定
+
+   時間内に購入できても、
+   人気チケットは早い者勝ち。
+   ギリギリの購入ほど、
+   他のお客様に買い負ける
+   可能性が上がります
+===================================================== */
+
+function determineOutcome(totalTime) {
+
+  if(totalTime > target.sellOut) {
+
+    return "soldOut";
+
+  }
+
+
+  const margin =
+    target.sellOut - totalTime;
+
+
+  const raceLossChance =
+    calculateRaceLossChance(
+      margin
+    );
+
+
+  if(Math.random() < raceLossChance) {
+
+    return "raceLoss";
+
+  }
+
+
+  return "success";
+
+}
+
+
+function calculateRaceLossChance(margin) {
+
+
+  /*
+    難易度が高いほど
+    競合が多い
+  */
+
+  const difficultyFactor =
+    target.difficulty * 0.04;
+
+
+  /*
+    購入完了がギリギリなほど
+    買い負けやすい
+  */
+
+  let marginPenalty;
+
+
+  if(margin < 0.5) {
+
+    marginPenalty = 0.45;
+
+  }
+
+  else if(margin < 1.5) {
+
+    marginPenalty = 0.30;
+
+  }
+
+  else if(margin < 3) {
+
+    marginPenalty = 0.18;
+
+  }
+
+  else if(margin < 6) {
+
+    marginPenalty = 0.08;
+
+  }
+
+  else {
+
+    marginPenalty = 0.02;
+
+  }
+
+
+  return Math.min(
+    0.75,
+    difficultyFactor + marginPenalty
   );
 
 }
@@ -3155,9 +3917,13 @@ function purchase() {
 ===================================================== */
 
 function showResult(
-  success,
+  outcome,
   totalTime
 ) {
+
+  lastResultOutcome =
+    outcome;
+
 
   const title =
     document
@@ -3188,7 +3954,7 @@ function showResult(
     totalTime.toFixed(3);
 
 
-  if(success) {
+  if(outcome === "success") {
 
 
     const margin =
@@ -3224,6 +3990,60 @@ function showResult(
         秒の余裕で購入できました！
 
       </div>
+
+    `;
+
+  }
+
+  else if(outcome === "raceLoss") {
+
+
+    const margin =
+      target.sellOut
+      - totalTime;
+
+
+    title.textContent =
+      "😭 買い負け……";
+
+
+    title.className =
+      "failure";
+
+
+    subtitle.textContent =
+      "時間には間に合いましたが、"
+      + "一足早い挑戦者に"
+      + "購入されてしまいました。";
+
+
+    details.innerHTML = `
+
+      <div class="warning">
+
+        売り切れ時間：
+        ${target.sellOut.toFixed(3)}秒
+
+      </div>
+
+
+      <div class="result-time failure">
+
+        ${margin.toFixed(3)}
+        秒の余裕があったのに、
+        買い負けてしまいました……
+
+      </div>
+
+
+      <p class="small">
+
+        人気チケットは時間内でも
+        早い者勝ちです。
+        もっと早く購入を
+        確定させましょう！
+
+      </p>
 
     `;
 
@@ -3271,13 +4091,51 @@ function showResult(
   }
 
 
+  /*
+    連打ダッシュで
+    短縮できた場合の演出
+  */
+
+  if(queueTimeSavedByMash > 50) {
+
+    details.innerHTML += `
+
+      <div class="info">
+
+        🔥 連打ダッシュで
+        ${
+          (queueTimeSavedByMash / 1000)
+            .toFixed(2)
+        }秒短縮しました！
+        （タップ数：${mashTapCount}回）
+
+      </div>
+
+    `;
+
+  }
+
+
   calculateScore(
     totalTime,
-    success
+    outcome
   );
 
 
   show("result");
+
+
+  if(outcome === "success") {
+
+    launchConfetti();
+
+  }
+
+  else {
+
+    shakeScreen();
+
+  }
 
 }
 
@@ -3288,8 +4146,12 @@ function showResult(
 
 function calculateScore(
   totalTime,
-  success
+  outcome
 ) {
+
+  const success =
+    outcome === "success";
+
 
   let score = 0;
 
@@ -3373,13 +4235,668 @@ function calculateScore(
 
 
   document
+    .getElementById("rank")
+    .className =
+    "rank rank-" + rank;
+
+
+  document
     .getElementById("score")
     .textContent =
     "スコア：" +
     score.toLocaleString() +
     "点";
 
+
+  saveResultAndUpdateRanking(
+    score,
+    rank,
+    totalTime,
+    outcome
+  );
+
 }
+
+
+/* =====================================================
+   結果をランキングに保存
+===================================================== */
+
+function saveResultAndUpdateRanking(
+  score,
+  rank,
+  totalTime,
+  outcome
+) {
+
+  const date =
+    dates[target.dateIndex];
+
+
+  const seat =
+    seats[target.seatIndex];
+
+
+  const previousBest =
+    loadRanking()[0]
+      ?.score
+    ?? -1;
+
+
+  const record = {
+
+    score: score,
+
+    rank: rank,
+
+    time: totalTime,
+
+    success: outcome === "success",
+
+    outcome: outcome,
+
+    ticket:
+      date.team + "戦 / "
+      + seat.name
+      + (
+        seat.side
+          ? " " + seat.side
+          : ""
+      )
+      + " / "
+      + target.quantity + "枚",
+
+    date:
+      new Date()
+        .toLocaleString("ja-JP")
+
+  };
+
+
+  saveRankingRecord(record);
+
+
+  updateBestBadge();
+
+
+  const badge =
+    document
+      .getElementById(
+        "newRecordBadge"
+      );
+
+
+  badge.style.display =
+    score > previousBest
+      ? "block"
+      : "none";
+
+}
+
+
+/* =====================================================
+   ランキングの保存・読み込み
+
+   サーバーが無いゲームなので、
+   この端末（ブラウザ）の中だけに
+   記録を保存します
+===================================================== */
+
+const RANKING_KEY =
+  "ticketBattleRanking";
+
+
+function loadRanking() {
+
+  try {
+
+    return (
+      JSON.parse(
+        localStorage
+          .getItem(RANKING_KEY)
+      )
+      || []
+    );
+
+  }
+
+  catch(e) {
+
+    return [];
+
+  }
+
+}
+
+
+function saveRankingRecord(record) {
+
+  const list =
+    loadRanking();
+
+
+  list.push(record);
+
+
+  list.sort(
+    (a,b) => b.score - a.score
+  );
+
+
+  const trimmed =
+    list.slice(0,10);
+
+
+  try {
+
+    localStorage.setItem(
+      RANKING_KEY,
+      JSON.stringify(trimmed)
+    );
+
+  }
+
+  catch(e) {}
+
+
+  return trimmed;
+
+}
+
+
+/* =====================================================
+   自己ベストバッジ
+===================================================== */
+
+function updateBestBadge() {
+
+  const list =
+    loadRanking();
+
+
+  const box =
+    document
+      .getElementById(
+        "bestRecordBox"
+      );
+
+
+  if(list.length === 0) {
+
+    box.style.display =
+      "none";
+
+
+    return;
+
+  }
+
+
+  const best =
+    list[0];
+
+
+  document
+    .getElementById(
+      "bestRecordText"
+    )
+    .textContent =
+    best.rank + "ランク（"
+    + best.score.toLocaleString()
+    + "点）";
+
+
+  box.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   ランキング画面
+===================================================== */
+
+function showRanking() {
+
+  renderRanking();
+
+  show("ranking");
+
+}
+
+
+/*
+  結果の種類を
+  日本語ラベルに変換
+
+  古い記録（outcomeが
+  無いもの）にも対応
+*/
+
+function outcomeLabel(record) {
+
+  const outcome =
+    record.outcome
+    ?? (
+      record.success
+        ? "success"
+        : "soldOut"
+    );
+
+
+  if(outcome === "success") {
+
+    return "購入成功";
+
+  }
+
+  if(outcome === "raceLoss") {
+
+    return "買い負け";
+
+  }
+
+  return "売り切れ";
+
+}
+
+
+function renderRanking() {
+
+  const list =
+    loadRanking();
+
+
+  const container =
+    document
+      .getElementById(
+        "rankingList"
+      );
+
+
+  if(list.length === 0) {
+
+    container.innerHTML = `
+
+      <p class="small center">
+
+        まだ記録がありません。
+        ゲームをプレイしてみましょう！
+
+      </p>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+
+    '<div class="rank-list">'
+
+    + list.map(
+      (r,i) => `
+
+        <div class="rank-item ${
+          i === 0 ? "top1" : ""
+        }">
+
+          <div class="rank-item-position">
+            ${i + 1}
+          </div>
+
+          <div class="rank-item-info">
+
+            <div class="rank-item-score">
+              ${r.rank}ランク・
+              ${r.score.toLocaleString()}点
+            </div>
+
+            <div class="small">
+              ${r.ticket}
+            </div>
+
+            <div class="small">
+              ${r.time.toFixed(3)}秒 /
+              ${outcomeLabel(r)} /
+              ${r.date}
+            </div>
+
+          </div>
+
+        </div>
+
+      `
+    ).join("")
+
+    + "</div>";
+
+}
+
+
+/* =====================================================
+   SNS共有
+===================================================== */
+
+function buildShareText() {
+
+  const date =
+    dates[target.dateIndex];
+
+
+  const rankText =
+    document
+      .getElementById("rank")
+      .textContent;
+
+
+  const scoreText =
+    document
+      .getElementById("score")
+      .textContent;
+
+
+  const timeText =
+    document
+      .getElementById("resultTime")
+      .textContent;
+
+
+  const resultWord =
+    outcomeLabel({
+      outcome: lastResultOutcome
+    });
+
+
+  return (
+    "🎫チケットバトルで"
+    + date.team
+    + "戦のチケットに挑戦！\n"
+    + "結果："
+    + resultWord
+    + "（" + timeText + "秒）\n"
+    + "ランク：" + rankText
+    + " / " + scoreText
+    + "\n#チケットバトル"
+  );
+
+}
+
+
+function shareUrl() {
+
+  return (
+    location.href
+      .split("#")[0]
+  );
+
+}
+
+
+function shareNative() {
+
+  if(navigator.share) {
+
+    navigator.share({
+
+      title: "TICKET BATTLE",
+
+      text: buildShareText(),
+
+      url: shareUrl()
+
+    }).catch(() => {});
+
+  }
+
+}
+
+
+function shareToX() {
+
+  const url =
+    "https://twitter.com/intent/tweet?text="
+    + encodeURIComponent(
+      buildShareText()
+    )
+    + "&url="
+    + encodeURIComponent(
+      shareUrl()
+    );
+
+
+  window.open(
+    url,
+    "_blank",
+    "noopener"
+  );
+
+}
+
+
+function shareToLine() {
+
+  const url =
+    "https://line.me/R/msg/text/?"
+    + encodeURIComponent(
+      buildShareText()
+      + "\n"
+      + shareUrl()
+    );
+
+
+  window.open(
+    url,
+    "_blank",
+    "noopener"
+  );
+
+}
+
+
+function copyShareLink() {
+
+  const text =
+    buildShareText()
+    + "\n"
+    + shareUrl();
+
+
+  const btn =
+    document
+      .getElementById(
+        "copyShareBtn"
+      );
+
+
+  const original =
+    btn.textContent;
+
+
+  const done = () => {
+
+    btn.textContent =
+      "✅ コピーしました";
+
+
+    setTimeout(() => {
+
+      btn.textContent =
+        original;
+
+    },1500);
+
+  };
+
+
+  if(
+    navigator.clipboard
+    && navigator.clipboard.writeText
+  ) {
+
+    navigator.clipboard
+      .writeText(text)
+      .then(done)
+      .catch(() => {
+
+        fallbackCopy(text);
+
+        done();
+
+      });
+
+  }
+
+  else {
+
+    fallbackCopy(text);
+
+    done();
+
+  }
+
+}
+
+
+function fallbackCopy(text) {
+
+  const ta =
+    document.createElement(
+      "textarea"
+    );
+
+
+  ta.value = text;
+
+  ta.style.position = "fixed";
+
+  ta.style.opacity = "0";
+
+
+  document.body.appendChild(ta);
+
+  ta.select();
+
+
+  try {
+
+    document.execCommand("copy");
+
+  }
+
+  catch(e) {}
+
+
+  document.body.removeChild(ta);
+
+}
+
+
+/* =====================================================
+   紙吹雪・シェイク演出
+===================================================== */
+
+function launchConfetti() {
+
+  const container =
+    document
+      .getElementById(
+        "confettiContainer"
+      );
+
+
+  const colors = [
+
+    "#2563eb",
+    "#f59e0b",
+    "#059669",
+    "#dc2626",
+    "#8b5cf6"
+
+  ];
+
+
+  for(
+    let i = 0;
+    i < 60;
+    i++
+  ) {
+
+    const piece =
+      document.createElement(
+        "div"
+      );
+
+
+    piece.className =
+      "confetti-piece";
+
+    piece.style.left =
+      random(0,100) + "vw";
+
+    piece.style.background =
+      colors[
+        random(0,colors.length - 1)
+      ];
+
+    piece.style.animationDuration =
+      (2 + Math.random() * 1.5)
+      + "s";
+
+    piece.style.animationDelay =
+      (Math.random() * 0.4)
+      + "s";
+
+
+    container.appendChild(piece);
+
+
+    setTimeout(() => {
+      piece.remove();
+    },4000);
+
+  }
+
+}
+
+
+function shakeScreen() {
+
+  const card =
+    document.querySelector(
+      "#result .card"
+    );
+
+
+  card.classList.remove("shake");
+
+  void card.offsetWidth;
+
+  card.classList.add("shake");
+
+}
+
+
+/* =====================================================
+   初期化
+===================================================== */
+
+if(navigator.share) {
+
+  document
+    .getElementById(
+      "nativeShareBtn"
+    )
+    .style.display =
+    "inline-block";
+
+}
+
+
+updateBestBadge();
 
 </script>
 
